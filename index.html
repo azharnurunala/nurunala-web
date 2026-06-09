@@ -38,12 +38,12 @@
 
 <nav class="site-nav">
   <div class="nav-inner">
-    <a class="brand" href="index.html">nurunala</a>
+    <a class="brand" href="/">nurunala</a>
     <ul class="nav-links">
-      <li><a href="index.html" class="active">Blog</a></li>
-      <li><a href="buku.html">Buku</a></li>
-      <li><a href="kelas.html">Kelas</a></li>
-      <li><a href="tentang.html" class="nav-quiet">Profil</a></li>
+      <li><a href="/" class="active">Blog</a></li>
+      <li><a href="/buku">Buku</a></li>
+      <li><a href="/kelas">Kelas</a></li>
+      <li><a href="/tentang" class="nav-quiet">Profil</a></li>
     </ul>
   </div>
 </nav>
@@ -71,7 +71,7 @@
     const slice = allPosts.slice(start, start+PER_PAGE);
     const total = Math.ceil(allPosts.length/PER_PAGE);
     document.getElementById('post-list').innerHTML = slice.map((p,i)=>`
-      <a class="post-item" href="baca.html?i=${start+i}">
+      <a class="post-item" href="/baca?i=${start+i}">
         <div class="post-date">${p.date}</div>
         <div class="post-title">${p.title}</div>
         <div class="post-excerpt">${p.excerpt}</div>

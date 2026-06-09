@@ -6,17 +6,17 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://nurunala.blog/buku.html</loc>
+    <loc>https://nurunala.blog/buku</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://nurunala.blog/kelas.html</loc>
+    <loc>https://nurunala.blog/kelas</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://nurunala.blog/tentang.html</loc>
+    <loc>https://nurunala.blog/tentang</loc>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>

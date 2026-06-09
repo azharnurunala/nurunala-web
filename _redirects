@@ -1,4 +1,0 @@
-# URL rapi tanpa .html (opsional, biar /buku bukan /buku.html)
-/buku      /buku.html      200
-/kelas     /kelas.html     200
-/tentang   /tentang.html   200

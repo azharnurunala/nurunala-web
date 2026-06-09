@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Belajar menulis bersama Azhar Nurunala — workshop langsung, kelas video yang bisa diikuti kapan saja, dan ebook.">
+<meta name="author" content="Azhar Nurunala">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nurunala">
+<meta property="og:title" content="Kelas — nurunala">
+<meta property="og:description" content="Belajar menulis bersama Azhar Nurunala — workshop langsung, kelas video yang bisa diikuti kapan saja, dan ebook.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kelas — nurunala">
+<meta name="twitter:description" content="Belajar menulis bersama Azhar Nurunala — workshop langsung, kelas video yang bisa diikuti kapan saja, dan ebook.">
+<title>Kelas — nurunala</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .courses{ max-width:var(--max); margin:0 auto; padding:4rem 1.5rem 2.75rem; }
+  .section-title{ font-family:var(--serif); font-size:30px; font-weight:400; margin-bottom:.5rem; }
+  .section-sub{ font-size:14px; color:var(--muted); font-family:var(--body-serif); font-style:italic; margin-bottom:2.5rem; }
+  .courses-section-label{ font-size:11px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:1.5rem; padding-bottom:.75rem; border-bottom:0.5px solid var(--faint); }
+  .courses-gap{ margin-top:3rem; }
+
+  .course-item{ display:flex; flex-direction:column; gap:1.25rem; padding:2.25rem 0; border-bottom:0.5px solid var(--faint); align-items:stretch; }
+  .course-item:first-of-type{ border-top:0.5px solid var(--faint); }
+  .course-thumb{ width:100%; aspect-ratio:6/4; border-radius:10px; position:relative; overflow:hidden; display:flex; align-items:flex-end; padding:1.75rem 2rem; }
+  .course-thumb-stripe{ position:absolute; top:0; left:0; width:100%; height:7px; }
+  .course-thumb-label{ font-family:var(--serif); font-size:26px; font-style:italic; color:var(--ink); line-height:1.25; position:relative; z-index:1; }
+  .course-content{ }
+  .course-badge{ display:inline-block; font-size:11px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; padding:3px 10px; border-radius:20px; margin-bottom:.75rem; }
+  .badge-open{ background:#eaf3de; color:#3b6d11; }
+  .badge-soon{ background:#faeeda; color:#854f0b; }
+  .course-name{ font-family:var(--serif); font-size:20px; font-weight:400; margin-bottom:.4rem; }
+  .course-desc{ font-size:14px; color:var(--muted); line-height:1.65; margin-bottom:.9rem; }
+  .course-detail{ font-size:13px; color:var(--muted); }
+  .course-detail span{ color:var(--ink); }
+  .course-content .btn{ margin-top:1rem; }
+  @media(max-width:560px){
+    .course-thumb{ padding:1.4rem 1.5rem; }
+    .course-thumb-label{ font-size:21px; }
+  }
+
+  .video-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1.25rem; }
+  .video-card{ border:0.5px solid var(--faint); border-radius:8px; overflow:hidden; cursor:pointer; transition:border-color .15s; }
+  .video-card:hover{ border-color:var(--line); }
+  .video-thumb{ position:relative; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; }
+  .video-thumb-label{ font-family:var(--serif); font-size:12px; font-style:italic; color:var(--muted); text-align:center; padding:.5rem; line-height:1.4; }
+  .play-icon{ position:absolute; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,.9); display:flex; align-items:center; justify-content:center; }
+  .play-icon svg{ width:14px; height:14px; fill:var(--ink); margin-left:2px; }
+  .video-info{ padding:.75rem 1rem 1rem; }
+  .video-title{ font-family:var(--serif); font-size:14px; margin-bottom:.3rem; line-height:1.3; }
+  .video-meta{ font-size:12px; color:var(--muted); margin-bottom:.6rem; }
+  .video-price{ font-size:13px; font-weight:500; }
+  .video-card .buy-btn{ margin-top:.6rem; display:block; width:100%; font-size:12px; font-weight:500; color:var(--ink); border:0.5px solid var(--line); padding:7px 0; border-radius:4px; cursor:pointer; background:none; font-family:var(--sans); text-align:center; transition:background .15s; }
+  .video-card .buy-btn:hover{ background:var(--faint); }
+  @media(max-width:480px){
+    .video-grid{ grid-template-columns:1fr; gap:1rem; }
+    .video-card{ display:flex; flex-direction:row; align-items:stretch; }
+    .video-thumb{ width:110px; flex-shrink:0; aspect-ratio:unset !important; min-height:90px; }
+    .video-info{ flex:1; padding:.65rem .85rem .75rem; }
+  }
+
+  .ebook-list{ display:flex; flex-direction:column; gap:1rem; }
+  .ebook-card{ border:0.5px solid var(--faint); border-radius:8px; padding:1.6rem; display:flex; flex-direction:row; gap:1.6rem; align-items:center; }
+  .ebook-cover{ width:104px; flex-shrink:0; aspect-ratio:2/3; border-radius:4px; background:#dce8e2; position:relative; overflow:hidden; display:flex; align-items:flex-end; padding:.65rem; }
+  .ebook-cover-stripe{ position:absolute; top:0; left:0; width:100%; height:6px; background:#9ac4b0; }
+  .ebook-cover-title{ font-family:var(--serif); font-size:11px; font-style:italic; line-height:1.3; position:relative; z-index:1; }
+  .ebook-info{ flex:1; min-width:0; }
+  .ebook-label{ font-size:11px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; }
+  .ebook-title{ font-family:var(--serif); font-size:19px; font-weight:400; margin-bottom:.5rem; line-height:1.3; }
+  .ebook-desc{ font-size:13.5px; color:var(--muted); line-height:1.65; margin-bottom:1.15rem; }
+  .ebook-footer{ display:flex; align-items:center; gap:1.25rem; }
+  .ebook-price{ font-size:14px; font-weight:500; }
+  @media(max-width:480px){
+    .ebook-card{ flex-direction:column; gap:1.25rem; align-items:stretch; }
+    .ebook-cover{ width:100%; aspect-ratio:3/1; max-height:72px; flex-direction:row; align-items:center; gap:.75rem; padding:0 1rem; }
+    .ebook-cover-stripe{ width:5px; height:100%; top:0; left:0; border-radius:3px 0 0 3px; }
+    .ebook-cover-title{ font-size:13px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">nurunala</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Blog</a></li>
+      <li><a href="buku.html">Buku</a></li>
+      <li><a href="kelas.html" class="active">Kelas</a></li>
+      <li><a href="tentang.html" class="nav-quiet">Profil</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="courses">
+  <div class="section-title">Kelas</div>
+  <div class="section-sub">Belajar menulis — dari workshop langsung hingga kelas video yang bisa diikuti kapan saja</div>
+
+  <div class="courses-section-label">Workshop</div>
+  <div class="course-item">
+    <div class="course-thumb" style="background:#eaf1de">
+      <div class="course-thumb-stripe" style="background:#8fb45e"></div>
+      <div class="course-thumb-label">Menulis Cerpen<br>dari Nol</div>
+    </div>
+    <div class="course-content">
+      <div class="course-badge badge-open">Pendaftaran Dibuka</div>
+      <div class="course-name">Menulis Cerpen dari Nol</div>
+      <div class="course-desc">Workshop intensif selama empat sesi untuk penulis pemula. Dari ide pertama hingga draf akhir — dengan pendekatan yang berfokus pada kejujuran dan detail kecil yang hidup.</div>
+      <div class="course-detail">4 sesi · <span>Juli 2026</span> · Online via Zoom</div>
+      <button class="btn">Daftar Sekarang</button>
+    </div>
+  </div>
+  <div class="course-item">
+    <div class="course-thumb" style="background:#f6ead6">
+      <div class="course-thumb-stripe" style="background:#d6a35c"></div>
+      <div class="course-thumb-label">Fiksi Mini:<br>500 Kata</div>
+    </div>
+    <div class="course-content">
+      <div class="course-badge badge-soon">Segera Hadir</div>
+      <div class="course-name">Fiksi Mini: Menulis dalam 500 Kata</div>
+      <div class="course-desc">Belajar memadatkan cerita utuh ke dalam ruang yang sempit. Workshop satu hari penuh dengan latihan intensif dan sesi umpan balik langsung.</div>
+      <div class="course-detail">1 hari penuh · <span>8 Agustus 2026</span> · Jakarta</div>
+      <button class="btn btn--disabled">Segera Hadir</button>
+    </div>
+  </div>
+
+  <div class="courses-section-label courses-gap">Video Kelas</div>
+  <div class="video-grid">
+    <div class="video-card">
+      <div class="video-thumb" style="background:#e4dfe8">
+        <div class="video-thumb-label">Membangun Karakter<br>yang Hidup</div>
+        <div class="play-icon"><svg viewBox="0 0 16 16"><path d="M5 3.5l8 4.5-8 4.5V3.5z"/></svg></div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">Membangun Karakter yang Hidup</div>
+        <div class="video-meta">4 video · 1 jam 20 menit</div>
+        <div class="video-price">Rp 85.000</div>
+        <button class="buy-btn">Beli Kelas</button>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-thumb" style="background:#dce8e2">
+        <div class="video-thumb-label">Menulis Dialog<br>yang Natural</div>
+        <div class="play-icon"><svg viewBox="0 0 16 16"><path d="M5 3.5l8 4.5-8 4.5V3.5z"/></svg></div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">Menulis Dialog yang Natural</div>
+        <div class="video-meta">3 video · 55 menit</div>
+        <div class="video-price">Rp 75.000</div>
+        <button class="buy-btn">Beli Kelas</button>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-thumb" style="background:#e8e4dc">
+        <div class="video-thumb-label">Struktur Cerita<br>Pendek</div>
+        <div class="play-icon"><svg viewBox="0 0 16 16"><path d="M5 3.5l8 4.5-8 4.5V3.5z"/></svg></div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">Struktur Cerita Pendek</div>
+        <div class="video-meta">5 video · 1 jam 45 menit</div>
+        <div class="video-price">Rp 95.000</div>
+        <button class="buy-btn">Beli Kelas</button>
+      </div>
+    </div>
+    <div class="video-card">
+      <div class="video-thumb" style="background:#dce2e8">
+        <div class="video-thumb-label">Menemukan Suara<br>Menulismu</div>
+        <div class="play-icon"><svg viewBox="0 0 16 16"><path d="M5 3.5l8 4.5-8 4.5V3.5z"/></svg></div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">Menemukan Suara Menulismu</div>
+        <div class="video-meta">4 video · 1 jam 10 menit</div>
+        <div class="video-price">Rp 80.000</div>
+        <button class="buy-btn">Beli Kelas</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="courses-section-label courses-gap">Ebook</div>
+  <div class="ebook-list">
+    <div class="ebook-card">
+      <div class="ebook-cover">
+        <div class="ebook-cover-stripe"></div>
+        <div class="ebook-cover-title">Menulis Novel</div>
+      </div>
+      <div class="ebook-info">
+        <div class="ebook-label">Ebook</div>
+        <div class="ebook-title">Menulis Novel</div>
+        <div class="ebook-desc">Panduan menulis novel dari halaman pertama hingga draf utuh — merancang premis, membangun struktur bab, dan menjaga ritme cerita sampai selesai.</div>
+        <div class="ebook-footer">
+          <div class="ebook-price">Rp 49.000</div>
+          <button class="btn">Unduh Sekarang</button>
+        </div>
+      </div>
+    </div>
+    <div class="ebook-card">
+      <div class="ebook-cover" style="background:#e8dce2">
+        <div class="ebook-cover-stripe" style="background:#c490a9"></div>
+        <div class="ebook-cover-title">Menulis Memoar</div>
+      </div>
+      <div class="ebook-info">
+        <div class="ebook-label">Ebook</div>
+        <div class="ebook-title">Menulis Memoar</div>
+        <div class="ebook-desc">Mengubah kenangan pribadi menjadi tulisan yang jujur — memilih momen yang penting, menemukan benang merah, dan menulis tentang diri sendiri.</div>
+        <div class="ebook-footer">
+          <div class="ebook-price">Rp 49.000</div>
+          <button class="btn">Unduh Sekarang</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="foot-legal">© 2026 Azhar Nurunala</div>
+</footer>
+
+</body>
+</html>

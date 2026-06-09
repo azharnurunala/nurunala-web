@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nurunala</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Lora:ital,wght@0,400;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --serif:'Playfair Display',Georgia,serif;
+  --body-serif:'Lora',Georgia,serif;
+  --sans:'Inter',system-ui,sans-serif;
+  --ink:#1a1a18;--muted:#6b6b65;--faint:#e8e6df;--bg:#fafaf8;--page:#ffffff;--max:680px;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100vh}
+nav{border-bottom:0.5px solid var(--faint);background:var(--page);position:sticky;top:0;z-index:10}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px}
+.brand{font-family:var(--serif);font-size:18px;font-weight:400;cursor:pointer;color:var(--ink);text-decoration:none}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{font-size:13px;font-weight:400;color:var(--muted);text-decoration:none;letter-spacing:0.03em;cursor:pointer;transition:color 0.15s}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.page{display:none}.page.active{display:block}
+
+.home-hero{max-width:var(--max);margin:0 auto;padding:4rem 1.5rem 2.5rem;border-bottom:0.5px solid var(--faint)}
+.home-hero h1{font-family:var(--serif);font-size:38px;font-weight:400;line-height:1.25;color:var(--ink);margin-bottom:1rem}
+.home-hero p{font-size:15px;color:var(--muted);line-height:1.7;max-width:480px}
+.post-list{max-width:var(--max);margin:0 auto;padding:0 1.5rem 1rem}
+.post-item{padding:2rem 0;border-bottom:0.5px solid var(--faint);cursor:pointer}
+.post-item:last-child{border-bottom:none}
+.post-date{font-size:11px;color:var(--muted);letter-spacing:0.03em;margin-bottom:0.6rem}
+.post-title{font-family:var(--serif);font-size:22px;font-weight:400;color:var(--ink);margin-bottom:0.5rem;line-height:1.3}
+.post-title:hover{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--faint)}
+.post-excerpt{font-size:14px;color:var(--muted);line-height:1.7}
+.pagination{max-width:var(--max);margin:0 auto;padding:1.5rem 1.5rem 4rem;display:flex;gap:1.5rem}
+.page-btn{font-size:13px;color:var(--muted);cursor:pointer;background:none;border:none;padding:0;font-family:var(--sans)}
+.page-btn:hover{color:var(--ink)}
+.page-btn.active-pg{color:var(--ink);font-weight:500}
+
+.reader{max-width:600px;margin:0 auto;padding:3.5rem 1.5rem 5rem}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;margin-bottom:2.5rem;background:none;border:none;padding:0;font-family:var(--sans)}
+.back-btn:hover{color:var(--ink)}
+.reader-date{font-size:11px;color:var(--muted);letter-spacing:0.03em;margin-bottom:1.25rem}
+.reader h1{font-family:var(--serif);font-size:32px;font-weight:400;line-height:1.25;color:var(--ink);margin-bottom:2rem}
+.reader-divider{width:40px;height:1px;background:var(--faint);margin-bottom:2rem}
+.reader-body{font-family:var(--body-serif);font-size:18px;line-height:1.85;color:var(--ink)}
+.reader-body p{margin-bottom:1.5em}
+.reader-body p:first-child::first-letter{font-size:52px;font-weight:400;float:left;line-height:0.85;margin:6px 8px 0 0}
+.post-footer{margin-top:3rem;padding-top:2rem;border-top:0.5px solid var(--faint)}
+.share-bar{display:flex;align-items:center;gap:10px;margin-bottom:2.5rem}
+.share-label{font-size:12px;color:var(--muted);letter-spacing:0.04em}
+.copy-btn{font-size:12px;color:var(--muted);background:none;border:0.5px solid var(--faint);padding:5px 14px;border-radius:20px;cursor:pointer;font-family:var(--sans);transition:all 0.15s}
+.copy-btn:hover{border-color:#b4b2a9;color:var(--ink)}
+.share-icon{color:var(--muted);background:none;border:none;padding:4px;cursor:pointer;transition:color 0.15s;text-decoration:none;display:inline-flex;align-items:center}
+.share-icon:hover{color:var(--ink)}
+.share-icon svg{width:17px;height:17px;fill:currentColor}
+.copy-confirm{font-size:12px;color:var(--muted);opacity:0;transition:opacity 0.3s}
+.copy-confirm.show{opacity:1}
+.comment-section h3{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink);margin-bottom:1.5rem}
+.comment-list{margin-bottom:1.5rem}
+.comment-item{padding:1rem 0;border-bottom:0.5px solid var(--faint)}
+.comment-item:first-child{border-top:0.5px solid var(--faint)}
+.comment-name{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:0.3rem}
+.comment-text{font-size:14px;color:var(--muted);line-height:1.65}
+.comment-time{font-size:11px;color:#d0cec8;margin-top:0.3rem}
+.comment-empty{font-size:14px;color:var(--muted);font-style:italic;margin-bottom:1.5rem}
+.comment-form{display:flex;flex-direction:column;gap:10px}
+.comment-form input,.comment-form textarea{width:100%;padding:10px 14px;font-size:14px;font-family:var(--sans);border:0.5px solid var(--faint);border-radius:6px;background:var(--page);color:var(--ink);outline:none;transition:border-color 0.15s;resize:none}
+.comment-form input:focus,.comment-form textarea:focus{border-color:#b4b2a9}
+.comment-form textarea{min-height:80px}
+.submit-btn{font-size:13px;font-weight:500;color:var(--ink);background:none;border:0.5px solid #b4b2a9;padding:8px 20px;border-radius:4px;cursor:pointer;font-family:var(--sans);transition:background 0.15s;align-self:flex-start}
+.submit-btn:hover{background:var(--faint)}
+
+.about{max-width:var(--max);margin:0 auto;padding:4rem 1.5rem 5rem}
+.about h1{font-family:var(--serif);font-size:30px;font-weight:400;margin-bottom:0.3rem}
+.about-subtitle{font-size:13px;color:var(--muted);letter-spacing:0.03em}
+.about-body{font-size:16px;line-height:1.85;color:var(--ink)}
+.about-body p{margin-bottom:1.25em}
+.contact-section{margin-top:2.5rem;padding-top:2rem;border-top:0.5px solid var(--faint)}
+.contact-section h3{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--ink);margin-bottom:1.25rem}
+.contact-form{display:flex;flex-direction:column;gap:10px}
+.contact-form input,.contact-form textarea{width:100%;padding:10px 14px;font-size:14px;font-family:var(--sans);border:0.5px solid var(--faint);border-radius:6px;background:var(--page);color:var(--ink);outline:none;transition:border-color 0.15s;resize:none}
+.contact-form input:focus,.contact-form textarea:focus{border-color:#b4b2a9}
+.contact-form textarea{min-height:100px}
+.contact-sent{font-size:13px;color:var(--muted);margin-top:0.5rem;opacity:0;transition:opacity 0.3s}
+.contact-sent.show{opacity:1}
+
+/* ── BOOKS ── */
+.books-page{max-width:var(--max);margin:0 auto;padding:4rem 1.5rem 5rem}
+.section-title{font-family:var(--serif);font-size:30px;font-weight:400;margin-bottom:2.5rem}
+
+/* Desktop: auto-fill, min 150px */
+.book-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:1.75rem;
+}
+/* Mobile: exactly 2 columns */
+@media(max-width:480px){
+  .book-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:1.25rem;
+  }
+}
+
+.book-card{cursor:pointer}
+.book-cover{
+  aspect-ratio:2/3;
+  border-radius:4px;
+  margin-bottom:0.75rem;
+  display:flex;align-items:flex-end;
+  padding:1rem;
+  position:relative;overflow:hidden;
+  transition:opacity 0.15s;
+}
+.book-card:hover .book-cover{opacity:0.82}
+.book-stripe{position:absolute;top:0;left:0;width:100%;height:6px}
+.book-cover-title{font-family:var(--serif);font-size:12px;font-style:italic;color:var(--ink);line-height:1.3;position:relative;z-index:1}
+.book-card-title{font-family:var(--serif);font-size:14px;color:var(--ink);margin-bottom:0.2rem;line-height:1.3}
+.book-card-meta{font-size:11px;color:var(--muted)}
+
+.book-detail{max-width:600px;margin:0 auto;padding:3.5rem 1.5rem 5rem}
+.book-detail-header{display:flex;gap:2rem;margin-bottom:2.5rem;align-items:flex-start}
+.book-detail-info h1{font-family:var(--serif);font-size:26px;font-weight:400;line-height:1.2;margin-bottom:0.6rem}
+.book-detail-cat{font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem}
+.book-detail-meta{font-size:13px;color:var(--muted);line-height:1.8}
+.book-divider{width:40px;height:1px;background:var(--faint);margin:2rem 0}
+.book-blurb{font-family:var(--body-serif);font-size:17px;line-height:1.85;color:var(--ink);margin-bottom:2.5rem}
+.book-blurb p{margin-bottom:1.25em}
+.book-reviews h3{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink);margin-bottom:1.25rem}
+.review-item{padding:1.25rem 0;border-bottom:0.5px solid var(--faint)}
+.review-item:first-child{border-top:0.5px solid var(--faint)}
+.review-stars{font-size:12px;color:#b4b2a9;margin-bottom:0.4rem;letter-spacing:2px}
+.review-text{font-size:14px;color:var(--muted);line-height:1.7;font-style:italic;margin-bottom:0.5rem}
+.review-name{font-size:12px;color:var(--muted)}
+
+/* ── COURSES ── */
+.courses{max-width:var(--max);margin:0 auto;padding:4rem 1.5rem 5rem}
+.courses-section-label{font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:0.5px solid var(--faint)}
+.courses-gap{margin-bottom:3rem}
+.course-item{padding:1.75rem 0;border-bottom:0.5px solid var(--faint)}
+.course-item:first-of-type{border-top:0.5px solid var(--faint)}
+.course-badge{display:inline-block;font-size:11px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:0.75rem}
+.badge-open{background:#eaf3de;color:#3b6d11}
+.badge-soon{background:#faeeda;color:#854f0b}
+.course-name{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--ink);margin-bottom:0.4rem}
+.course-desc{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:0.9rem}
+.course-detail{font-size:13px;color:var(--muted)}
+.course-detail span{color:var(--ink)}
+.enroll-btn{margin-top:1rem;display:inline-block;font-size:13px;font-weight:500;color:var(--ink);border:0.5px solid #b4b2a9;padding:8px 20px;border-radius:4px;cursor:pointer;background:none;font-family:var(--sans);transition:background 0.15s}
+.enroll-btn:hover{background:var(--faint)}
+
+/* Video grid: desktop auto-fill, mobile 1 col */
+.video-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:1.25rem;
+}
+@media(max-width:480px){
+  .video-grid{
+    grid-template-columns:1fr;
+    gap:1rem;
+  }
+}
+
+.video-card{border:0.5px solid var(--faint);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color 0.15s}
+.video-card:hover{border-color:#b4b2a9}
+
+/* On mobile, flip video card to horizontal layout */
+@media(max-width:480px){
+  .video-card{
+    display:flex;
+    flex-direction:row;
+    align-items:stretch;
+  }
+  .video-thumb{
+    width:110px;
+    flex-shrink:0;
+    aspect-ratio:unset !important;
+    min-height:90px;
+  }
+  .video-info{
+    flex:1;
+    padding:0.65rem 0.85rem 0.75rem;
+  }
+  .video-title{font-size:13px}
+  .video-meta{font-size:11px}
+  .video-price{font-size:13px}
+  .buy-btn{margin-top:0.4rem;padding:6px 0;font-size:11px}
+}
+
+.video-thumb{position:relative;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}
+.video-thumb-label{font-family:var(--serif);font-size:12px;font-style:italic;color:var(--muted);text-align:center;padding:0.5rem;line-height:1.4}
+.play-icon{position:absolute;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center}
+.play-icon svg{width:14px;height:14px;fill:var(--ink);margin-left:2px}
+.video-info{padding:0.75rem 1rem 1rem}
+.video-title{font-family:var(--serif);font-size:14px;color:var(--ink);margin-bottom:0.3rem;line-height:1.3}
+.video-meta{font-size:12px;color:var(--muted);margin-bottom:0.6rem}
+.video-price{font-size:13px;font-weight:500;color:var(--ink)}
+.buy-btn{margin-top:0.6rem;display:block;width:100%;font-size:12px;font-weight:500;color:var(--ink);border:0.5px solid #b4b2a9;padding:7px 0;border-radius:4px;cursor:pointer;background:none;font-family:var(--sans);text-align:center;transition:background 0.15s}
+.buy-btn:hover{background:var(--faint)}
+
+/* Ebook: desktop horizontal, mobile vertical */
+.ebook-card{
+  border:0.5px solid var(--faint);
+  border-radius:8px;
+  padding:1.5rem;
+  display:flex;
+  flex-direction:row;
+  gap:1.5rem;
+  align-items:flex-start;
+}
+@media(max-width:480px){
+  .ebook-card{
+    flex-direction:column;
+    gap:1.25rem;
+    align-items:stretch;
+  }
+  .ebook-cover{
+    width:100% !important;
+    aspect-ratio:3/1 !important;
+    max-height:72px;
+    flex-direction:row;
+    align-items:center;
+    gap:0.75rem;
+    padding:0 1rem;
+  }
+  .ebook-cover-stripe{
+    width:5px !important;
+    height:100% !important;
+    top:0;left:0;
+    border-radius:3px 0 0 3px;
+  }
+  .ebook-cover-title{font-size:13px !important;font-style:italic}
+}
+
+.ebook-cover{width:72px;flex-shrink:0;aspect-ratio:2/3;border-radius:3px;background:#dce8e2;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:0.5rem}
+.ebook-cover-stripe{position:absolute;top:0;left:0;width:100%;height:5px;background:#9ac4b0}
+.ebook-cover-title{font-family:var(--serif);font-size:9px;font-style:italic;color:var(--ink);line-height:1.3;position:relative;z-index:1}
+.ebook-info{flex:1}
+.ebook-label{font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem}
+.ebook-title{font-family:var(--serif);font-size:18px;font-weight:400;color:var(--ink);margin-bottom:0.5rem;line-height:1.3}
+.ebook-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:1rem}
+.ebook-footer{display:flex;align-items:center;gap:1rem}
+.ebook-price{font-size:14px;font-weight:500;color:var(--ink)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="brand" onclick="showPage('home')">nurunala</a>
+    <ul class="nav-links">
+      <li><a onclick="showPage('about')" id="nav-about">About</a></li>
+      <li><a onclick="showPage('books')" id="nav-books">Books</a></li>
+      <li><a onclick="showPage('courses')" id="nav-courses">Courses</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page active" id="page-home">
+  <div class="home-hero">
+    <h1>Merapikan Kenangan</h1>
+    <p>segala yang fana, abadi dalam aksara</p>
+  </div>
+  <div class="post-list" id="post-list"></div>
+  <div class="pagination" id="pagination"></div>
+</div>
+
+<div class="page" id="page-reader">
+  <div class="reader">
+    <button class="back-btn" onclick="showPage('home')">← Kembali</button>
+    <div class="reader-date" id="reader-date"></div>
+    <h1 id="reader-title"></h1>
+    <div class="reader-divider"></div>
+    <div class="reader-body" id="reader-body"></div>
+    <div class="post-footer">
+      <div class="share-bar">
+        <span class="share-label">Bagikan</span>
+        <button class="copy-btn" onclick="copyLink()">Salin tautan</button>
+        <a class="share-icon" href="#" onclick="shareWA(event)" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+        <a class="share-icon" href="#" onclick="shareX(event)" title="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a class="share-icon" href="#" onclick="shareIG(event)" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+        <span class="copy-confirm" id="copy-confirm">Tautan disalin!</span>
+      </div>
+      <div class="comment-section">
+        <h3>Komentar</h3>
+        <div class="comment-list" id="comment-list"></div>
+        <div class="comment-form">
+          <input type="text" id="c-name" placeholder="Nama kamu" maxlength="60">
+          <textarea id="c-text" placeholder="Tulis komentar..."></textarea>
+          <button class="submit-btn" onclick="submitComment()">Kirim</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-about">
+  <div class="about">
+    <div style="margin-bottom:2rem">
+      <h1>Azhar Nurunala</h1>
+      <div class="about-subtitle" style="margin-bottom:1.5rem">Penulis</div>
+      <div style="width:100%;aspect-ratio:3/4;max-height:480px;background:var(--faint);border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center">
+        <svg viewBox="0 0 400 533" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+          <rect width="400" height="533" fill="#e2dfd7"/>
+          <ellipse cx="200" cy="180" rx="72" ry="80" fill="#c8c4bb"/>
+          <ellipse cx="200" cy="420" rx="140" ry="120" fill="#c8c4bb"/>
+        </svg>
+      </div>
+    </div>
+    <div class="about-body">
+      <p>Saya menulis karena ada hal-hal yang lebih mudah disampaikan lewat fiksi daripada percakapan biasa. Cerpen, fiksi mini, dan sesekali opini — semua berangkat dari pengamatan kecil yang sulit dilupakan.</p>
+      <p>Tulisan saya pernah dimuat di berbagai media daring dan antologi bersama. Buku kumpulan cerpen pertama saya terbit pada 2022, disusul esai personal pada 2024.</p>
+      <p>Di luar menulis, saya percaya bahwa setiap orang punya cerita yang layak ditulis — dan kadang yang dibutuhkan hanya keberanian untuk memulai.</p>
+    </div>
+    <div class="contact-section">
+      <h3>Kirim Pesan</h3>
+      <div class="contact-form">
+        <input type="text" id="ct-name" placeholder="Nama kamu" maxlength="80">
+        <input type="email" id="ct-email" placeholder="Email">
+        <textarea id="ct-msg" placeholder="Pesan..."></textarea>
+        <button class="submit-btn" onclick="sendContact()">Kirim</button>
+        <span class="contact-sent" id="contact-sent">Pesan terkirim. Terima kasih sudah menyapa.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-books">
+  <div class="books-page">
+    <div class="section-title">Buku</div>
+    <div class="book-grid" id="book-grid"></div>
+  </div>
+</div>
+
+<div class="page" id="page-book-detail">
+  <div class="book-detail">
+    <button class="back-btn" onclick="showPage('books')">← Kembali ke Buku</button>
+    <div class="book-detail-header">
+      <div class="book-detail-cover" id="bd-cover"></div>
+      <div class="book-detail-info">
+        <div class="book-detail-cat" id="bd-cat"></div>
+        <h1 id="bd-title"></h1>
+        <div class="book-detail-meta" id="bd-meta"></div>
+        <a id="bd-shopee" href="#" target="_blank" rel="noopener" class="enroll-btn" style="margin-top:1rem;display:inline-block;text-decoration:none">Beli Online</a>
+      </div>
+    </div>
+    <div class="book-divider"></div>
+    <div class="book-blurb" id="bd-blurb"></div>
+    <div class="book-reviews">
+      <h3>Ulasan Pembaca</h3>
+      <div id="bd-reviews"></div>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-courses">
+  <div class="courses">
+    <div class="section-title">Courses</div>
+    <div class="courses-section-label courses-gap">Workshop</div>
+    <div class="course-item">
+      <div class="course-badge badge-open">Pendaftaran Dibuka</div>
+      <div class="course-name">Menulis Cerpen dari Nol</div>
+      <div class="course-desc">Workshop intensif selama empat sesi untuk penulis pemula. Dari ide pertama hingga draf akhir — dengan pendekatan yang berfokus pada kejujuran dan detail kecil yang hidup.</div>
+      <div class="course-detail">4 sesi · <span>Mei 2025</span> · Online via Zoom</div>
+      <button class="enroll-btn">Daftar Sekarang</button>
+    </div>
+    <div class="course-item" style="margin-bottom:3rem">
+      <div class="course-badge badge-soon">Segera Hadir</div>
+      <div class="course-name">Fiksi Mini: Menulis dalam 500 Kata</div>
+      <div class="course-desc">Belajar memadatkan cerita utuh ke dalam ruang yang sempit. Workshop satu hari penuh dengan latihan intensif dan sesi umpan balik langsung.</div>
+      <div class="course-detail">1 hari penuh · <span>8 Juni 2025</span> · Jakarta</div>
+      <button class="enroll-btn" style="opacity:0.5;cursor:default">Segera Hadir</button>
+    </div>
+    <div class="courses-section-label courses-gap">Video Kelas</div>
+    <div class="video-grid" style="margin-bottom:3rem">
+      <div class="video-card">
+        <div class="video-thumb" style="background:#e4dfe8">
+          <div class="video-thumb-label">Membangun Karakter<br>yang Hidup</div>
+          <div class="play-icon"><svg viewBox="0 0 16 16"><path d="M5 3.5l8 4.5-8 4.5V3.5z"/></svg></div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Membangun Karakter yang Hidup</div>
+          <div class="video-meta">4 video · 1 jam 20 menit</div>
+          <div class="video-price">Rp 85.000</div>
+          <button class="buy-btn">Beli Kelas</button>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb" style="background:#dce8e2">
+          <div class="video-thumb-label">Menulis Dialog<br>yang Natural</div>
+          <div class="play-icon"><svg viewBox="0 0 16 16"><path d="M5 3.5l8 4.5-8 4.5V3.5z"/></svg></div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Menulis Dialog yang Natural</div>
+          <div class="video-meta">3 video · 55 menit</div>
+          <div class="video-price">Rp 75.000</div>
+          <button class="buy-btn">Beli Kelas</button>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb" style="background:#e8e4dc">
+          <div class="video-thumb-label">Struktur Cerita<br>Pendek</div>
+          <div class="play-icon"><svg viewBox="0 0 16 16"><path d="M5 3.5l8 4.5-8 4.5V3.5z"/></svg></div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Struktur Cerita Pendek</div>
+          <div class="video-meta">5 video · 1 jam 45 menit</div>
+          <div class="video-price">Rp 95.000</div>
+          <button class="buy-btn">Beli Kelas</button>
+        </div>
+      </div>
+      <div class="video-card">
+        <div class="video-thumb" style="background:#dce2e8">
+          <div class="video-thumb-label">Menemukan Suara<br>Menulismu</div>
+          <div class="play-icon"><svg viewBox="0 0 16 16"><path d="M5 3.5l8 4.5-8 4.5V3.5z"/></svg></div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">Menemukan Suara Menulismu</div>
+          <div class="video-meta">4 video · 1 jam 10 menit</div>
+          <div class="video-price">Rp 80.000</div>
+          <button class="buy-btn">Beli Kelas</button>
+        </div>
+      </div>
+    </div>
+    <div class="courses-section-label courses-gap">Ebook</div>
+    <div class="ebook-card">
+      <div class="ebook-cover">
+        <div class="ebook-cover-stripe"></div>
+        <div class="ebook-cover-title">7 Langkah Menjadi Penulis</div>
+      </div>
+      <div class="ebook-info">
+        <div class="ebook-label">Ebook</div>
+        <div class="ebook-title">7 Langkah Menjadi Penulis</div>
+        <div class="ebook-desc">Panduan praktis untuk siapa pun yang ingin mulai menulis — dari menemukan ide, membangun kebiasaan menulis, hingga mengirimkan naskah ke penerbit. Ditulis dengan jujur dari pengalaman nyata.</div>
+        <div class="ebook-footer">
+          <div class="ebook-price">Rp 49.000</div>
+          <button class="enroll-btn" style="margin-top:0">Unduh Sekarang</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const PER_PAGE=10;
+let currentPage=0,currentPostIdx=null;
+const comments={};
+
+const allPosts=[
+  {date:'21 April 2025',title:'Memelihara Harapan',excerpt:'Elang bilang harapan bukan soal yakin sesuatu akan berhasil. Tapi soal mau tetap ada, meski tidak tahu.',body:`<p>"Kamu masih berharap?" tanya Rana. Nada suaranya bukan meremehkan — lebih seperti orang yang benar-benar ingin tahu jawaban yang jujur.</p><p>Elang menatap kopinya sebentar. Di luar, hujan turun pelan, jenis yang tidak dramatis tapi juga tidak berhenti-berhenti.</p><p>"Iya," katanya akhirnya.</p><p>"Kenapa? Bukannya kamu yang bilang dulu, tidak semua yang kita tunggu akan datang?"</p><p>"Iya, aku bilang itu."</p><p>"Terus?"</p><p>Elang meletakkan cangkirnya. "Harapan bukan soal yakin sesuatu akan berhasil. Kalau definisinya itu, ya, percuma — karena kita memang tidak bisa tahu." Ia bersandar. "Harapan itu lebih seperti... keputusan untuk tetap membuka pintu. Meski tidak ada yang datang, pintunya tetap terbuka."</p><p>Rana diam. Di luar, hujan mengecil sedikit, tapi belum reda.</p><p>"Itu tidak melelahkan?"</p><p>"Melelahkan." Elang mengangguk pelan. "Tapi menutup pintu juga melelahkan, dengan cara yang berbeda. Bedanya, kalau ditutup — kamu bahkan tidak tahu apa yang kamu lewatkan."</p><p>Rana menoleh ke jendela. Ada genangan kecil di trotoar, memantulkan lampu toko yang kuning.</p><p>"Jadi kamu pilih capek yang mana?"</p><p>"Capek yang masih menyisakan kemungkinan," kata Elang.</p><p>Rana tidak menjawab. Tapi ia tidak menutup topik itu. Ia membiarkannya duduk di antara mereka — seperti pintu yang memang sengaja dibiarkan terbuka sedikit, agar udara tetap bisa masuk.</p>`},
+  {date:'20 April 2025',title:'Marah Dulu',excerpt:'Setiap kali nonton yang kayak gini, rasanya campur aduk. Marah, tapi juga bingung. Mau ngapain? Mau ke mana?',body:`<p>Mereka duduk di teras kedai setelah tutup. Kursi-kursi sudah diangkat ke atas meja di dalam. Di luar, masih ada sisa gerimis.</p><p>Rana meletakkan ponselnya. Di layarnya, sebuah video panjang tentang penggusuran lahan di suatu desa. Warga menangis. Aparat berdiri dengan tameng.</p><p>"Aku," katanya, "setiap kali nonton yang kayak gini, rasanya campur aduk. Marah, tapi juga bingung. Mau ngapain? Mau ke mana? Mau lapor ke siapa?"</p><p>Elang menatap layar sebentar, lalu memandang gerimis.</p><p>"Terus jadinya enggak ngapa-ngapain?"</p><p>"Scroll terus. Nonton yang berikutnya. Ikut marah lagi. Lupa lagi." Rana menghela napas. "Kayak lingkaran yang enggak ke mana-mana."</p><p>"Itu karena kamu terlalu terburu-buru mau lompat ke solusi."</p><p>Rana mengernyit. "Memangnya kenapa kalau mau langsung cari solusi?"</p><p>"Karena rasa marah yang belum selesai, kalau dipaksa jadi tindakan, sering salah arah." Elang bersandar ke kursinya. "Marah dulu sampai tuntas. Pahami dulu apa yang bikin marah. Baru dari situ kelihatan mau ngapain."</p><p>"Tapi katanya kalau cuma marah, sama aja enggak berguna."</p><p>"Marah yang diam-diam, yang disimpan sendiri, yang habis itu dilupakan, iya. Tapi marah yang kamu sadari, yang kamu biarkan tinggal sebentar di dada sampai kamu benar-benar mengerti kenapa kamu marah, itu modal."</p><p>Rana mengambil ponselnya lagi. Menatap layar yang gelap.</p><p>"Jadi sekarang aku harus ngapain?"</p><p>Elang meliriknya sebentar. "Sekarang kamu sudah marah, kan?"</p><p>"Iya."</p><p>"Itu dulu sudah cukup."</p><p>Rana tidak menjawab. Tapi ia juga tidak membuka ponselnya lagi. Ia membiarkan gerimis itu berbunyi sebentar di atap sebelum akhirnya reda.</p>`},
+  {date:'14 April 2025',title:'Orang Asing di Meja Sebelah',excerpt:'Ia selalu memesan kopi yang sama, duduk di sudut yang sama. Tapi hari itu ia menoleh — dan sesuatu berubah, meski tak ada yang bergerak.',body:`<p>Ia selalu datang pukul sembilan pagi, sebelum kafe ramai. Memesan americano tanpa gula, duduk di meja pojok dekat jendela, membuka buku yang sampulnya selalu berbeda. Selama tiga minggu, aku hafal rutinitasnya lebih baik dari rutinitasku sendiri.</p><p>Hari itu ia menoleh. Bukan karena aku menatap terlalu lama — setidaknya bukan hanya karena itu. Ada sesuatu yang jatuh dari mejanya, selembar kertas kecil, dan angin dari pintu yang terbuka menerbangkannya tepat ke sepatuku.</p><p>Aku memungutnya. Tulisan tangan, huruf kecil-kecil, sebuah daftar: <em>beli bawang, hubungi dokter, jangan lupa bahwa langit masih ada.</em></p><p>Aku mendongak. Ia sudah berdiri setengah dari kursinya, tangan terulur. Matanya seperti orang yang baru saja tertangkap basah melakukan sesuatu yang terlalu jujur untuk diakui.</p><p>"Terima kasih," katanya, tanpa menjelaskan daftar itu. Aku menyerahkan kertas itu kembali, juga tanpa bertanya.</p><p>Keesokan harinya ia tidak datang. Kursi pojok itu kosong, americano tidak dipesan, dan aku menyadari aku tidak tahu namanya.</p>`},
+  {date:'2 Maret 2025',title:'Mengapa Kita Berhenti Membaca Perlahan',excerpt:'Di era notifikasi tak henti, membaca dengan sabar terasa seperti perlawanan kecil.',body:`<p>Ada sesuatu yang hilang ketika membaca menjadi kegiatan yang kita lakukan sambil melakukan hal lain. Buku di tangan, headphone di telinga, notifikasi bergetar di saku — kita hadir secara fisik di halaman, tapi pikiran kita sudah setengah perjalanan menuju tempat lain.</p><p>Membaca yang baik membutuhkan semacam kepercayaan. Kepercayaan bahwa penulis tahu ke mana ia membawa kita. Bahwa halaman yang terasa lambat bukan halaman yang sia-sia.</p><p>Membaca perlahan adalah bentuk kehadiran. Dan mungkin, di dunia yang terus meminta kita untuk bergerak lebih cepat, memilih untuk diam sejenak di dalam sebuah halaman adalah salah satu tindakan paling radikal yang masih bisa kita lakukan.</p>`},
+  {date:'18 Februari 2025',title:'500 Kata Tentang Hujan Terakhir',excerpt:'Hujan itu datang tanpa pamit, seperti semua hal yang paling diingat.',body:`<p>Hujan itu datang tanpa pamit, seperti semua hal yang paling diingat. Ia membasahi trotoar dan percakapan yang tidak pernah selesai.</p><p>Kamu berdiri di bawah teras minimarket dengan plastik kresek di tangan. Aku berdiri di sebelahmu karena tidak ada tempat lain yang lebih masuk akal untuk berdiri.</p><p>Hujan akhirnya berhenti dua puluh menit kemudian. Kamu pergi ke kiri, aku ke kanan. Tidak ada yang mengatakan sesuatu yang penting.</p>`},
+  {date:'5 Januari 2025',title:'Surat yang Tidak Pernah Dikirim',excerpt:'Tiga lembar kertas, tulisan tangan, tanda tangan yang ragu-ragu.',body:`<p>Tiga lembar kertas, tulisan tangan, tanda tangan yang ragu-ragu di bagian bawah halaman terakhir. Ia melipatnya tiga kali, memasukkannya ke amplop, menulis alamat yang sudah ia hafal sejak dua belas tahun lalu.</p><p>Surat itu ditulis pada suatu Minggu sore di bulan November, ketika hujan terlalu lebat untuk keluar dan terlalu ramai untuk berpikir jernih.</p><p>Bertahun-tahun kemudian, ia menemukan amplop itu lagi. Ia membukanya. Membaca semuanya. Lalu melipat kembali dengan hati-hati.</p>`},
+  {date:'12 Desember 2024',title:'Ruang Tunggu',excerpt:'Semua orang di sini sedang menunggu sesuatu. Tapi tidak ada yang bicara tentang apa.',body:`<p>Ruang tunggu rumah sakit punya cahaya yang tidak menyenangkan siapa pun. Terlalu terang untuk nyaman, terlalu dingin untuk tenang.</p><p>Di sebelahku, seorang perempuan tua membuka dan menutup ritsleting tasnya berulang kali. Suaranya seperti detak jam yang tidak presisi.</p><p>Nama dipanggil satu per satu. Orang-orang berdiri, mengumpulkan barang-barang mereka, pergi ke balik pintu putih.</p>`},
+  {date:'3 November 2024',title:'Tentang Orang-Orang yang Kita Lupakan',excerpt:'Ada wajah-wajah yang pernah kita kenal, lalu perlahan menghilang dari ingatan.',body:`<p>Kadang aku tiba-tiba teringat seseorang yang sudah bertahun-tahun tidak aku pikirkan. Teman sebangku kelas empat SD. Tetangga yang selalu menyapu teras di pagi hari.</p><p>Mereka pernah ada dalam hidupku — benar-benar ada, dalam cara yang nyata dan konkret. Kita berbagi ruang, berbagi waktu, mungkin berbagi beberapa patah kata.</p>`},
+  {date:'20 Oktober 2024',title:'Kota Setelah Tengah Malam',excerpt:'Ada versi lain dari kota ini yang hanya bisa dilihat setelah semua orang tidur.',body:`<p>Aku sering berjalan sendirian setelah tengah malam. Ada sesuatu tentang kota yang kosong yang membuatnya terasa lebih jujur.</p><p>Ada jembatan yang selalu aku lewati. Di siang hari ia biasa saja. Tapi malam hari, dengan lampu pantulan di air, ia terasa seperti ambang batas antara dua dunia yang tidak punya nama.</p>`},
+  {date:'8 September 2024',title:'Percakapan yang Tidak Selesai',excerpt:'Beberapa kalimat tidak pernah menemukan akhirnya.',body:`<p>Ada percakapan tertentu yang berhenti di tengah — bukan karena salah satu pihak memutuskan untuk berhenti, tapi karena sesuatu di luar kita memotong sebelum selesai.</p><p>Aku punya beberapa. Percakapan dengan seseorang yang meninggal sebelum aku sempat berkata apa yang seharusnya aku katakan.</p>`},
+  {date:'15 Agustus 2024',title:'Di Bawah Pohon yang Sama',excerpt:'Setiap tahun aku kembali ke tempat yang sama. Pohonnya tetap ada. Tapi aku selalu berbeda.',body:`<p>Ada pohon di sudut taman dekat rumah masa kecilku. Ketika kecil, aku pikir pohon itu sangat tua. Sekarang, setelah dua puluh tahun, aku baru sadar bahwa pohon itu mungkin tidak setua yang aku kira.</p><p>Yang berbeda adalah aku. Aku membawa lebih banyak hal sekarang — lebih banyak tahun, lebih banyak kehilangan, lebih banyak pertanyaan yang tidak terjawab.</p>`},
+  {date:'1 Juli 2024',title:'Memasak untuk Satu Orang',excerpt:'Ada kesedihan kecil yang tidak dramatis dalam memasak untuk diri sendiri.',body:`<p>Aku mulai belajar memasak ketika tinggal sendirian untuk pertama kalinya. Bukan karena aku suka memasak — lebih karena makan mi instan setiap hari mulai terasa seperti cara paling lambat untuk menyerah pada hidup.</p><p>Lama-lama aku menemukan sesuatu di dalamnya. Ketika tidak ada yang menonton, kamu bisa memasak persis seperti yang kamu mau.</p>`},
+  {date:'14 Juni 2024',title:'Buku yang Tidak Selesai Dibaca',excerpt:'Di rakku ada beberapa buku yang tidak pernah sampai halaman terakhir.',body:`<p>Ada buku di rakku yang sudah terbuka sampai halaman 73 selama hampir dua tahun. Pembatasnya masih di sana — sehelai struk belanja yang sudah memudar.</p><p>Mungkin tidak semua buku perlu diselesaikan. Mungkin 73 halaman itu sudah memberikan apa yang perlu diberikan pada saat itu.</p>`},
+  {date:'22 Mei 2024',title:'Orang yang Kita Jadi di Kota Lain',excerpt:'Ada versi dari diri kita yang hanya muncul ketika tidak ada yang mengenal kita.',body:`<p>Pertama kali aku menyadarinya di Yogyakarta. Aku ke sana sendirian, tidak kenal siapapun, dan dalam dua hari pertama aku berbicara kepada orang-orang asing dengan cara yang tidak pernah aku lakukan di kota sendiri.</p>`},
+];
+
+const coverStyles=[
+  {bg:'#dce8e2',stripe:'#9ac4b0'},{bg:'#e8e2dc',stripe:'#c4a990'},{bg:'#dce2e8',stripe:'#90a9c4'},
+  {bg:'#e8dce2',stripe:'#c490a9'},{bg:'#e2e8dc',stripe:'#a9c490'},{bg:'#e8e8dc',stripe:'#c4c490'},
+  {bg:'#dce8e8',stripe:'#90c4c4'},{bg:'#e8dcdc',stripe:'#c49090'},{bg:'#e2dce8',stripe:'#a990c4'},
+  {bg:'#e8e2dc',stripe:'#c4b090'},{bg:'#dce2e2',stripe:'#90b0b0'},{bg:'#e4dce8',stripe:'#b090c4'},
+];
+
+const allBooks=[
+  {title:'Jumpa Lagi di Surga',cat:'Novel',year:2026,pages:312,blurb:`<p>Sebuah novel tentang pertemuan yang tidak pernah kita rencanakan — dan perpisahan yang selalu datang terlalu cepat.</p>`,reviews:[{stars:5,text:'Saya menangis di halaman terakhir.',name:'Laila R., Goodreads'},{stars:5,text:'Nurunala menulis cinta seperti orang yang benar-benar pernah kehilangan.',name:'Dimas A., Goodreads'},{stars:4,text:'Novel yang akan kamu baca dua kali.',name:'Sari W., Goodreads'}]},
+  {title:'Seribu Wajah Ayah',cat:'Novel',year:2026,pages:284,blurb:`<p>Novel yang menjelajahi hubungan antara seorang anak dan ayahnya.</p>`,reviews:[{stars:5,text:'Ini bukan hanya tentang ayah.',name:'Rani P., Goodreads'},{stars:5,text:'Seperti membuka foto lama.',name:'Bagas T., Goodreads'},{stars:4,text:'Membuat saya menelepon ayah malam itu juga.',name:'Indah S., Goodreads'}]},
+  {title:'Janji untuk Ayah',cat:'Novel',year:2024,pages:256,blurb:`<p>Novel tentang seorang perempuan yang tumbuh bersama satu janji yang tidak pernah ia lupakan.</p>`,reviews:[{stars:5,text:'Menepati janji kadang artinya melepaskan.',name:'Maya K., Goodreads'},{stars:4,text:'Seperti sungai yang kelihatan dangkal tapi ternyata tidak.',name:'Rizal H., Goodreads'},{stars:4,text:'Karakter utamanya terasa sangat nyata.',name:'Dewi L., Goodreads'}]},
+  {title:'Festival Hujan',cat:'Novel',year:2024,pages:298,blurb:`<p>Dua orang bertemu setiap tahun selama sepuluh tahun. Novel tentang ritme yang kita ciptakan dengan orang lain.</p>`,reviews:[{stars:5,text:'Romantis tanpa sentimentalitas berlebihan.',name:'Citra M., Goodreads'},{stars:5,text:'Setiap bab terasa seperti satu musim hujan.',name:'Eko P., Goodreads'},{stars:4,text:'Novel tentang waktu yang paling jujur.',name:'Nisa F., Goodreads'}]},
+  {title:'Jangan Dulu Patah',cat:'Kumpulan Cerita',year:2023,pages:188,blurb:`<p>Dua belas cerita tentang orang-orang yang sedang belajar bertahan.</p>`,reviews:[{stars:5,text:'Terasa seperti surat dari teman yang sangat mengenal kamu.',name:'Fitri A., Goodreads'},{stars:4,text:'Favorit saya adalah cerita keempat.',name:'Hendra B., Goodreads'},{stars:5,text:'Menulis kesakitan dengan sangat lembut.',name:'Yuni S., Goodreads'}]},
+  {title:'Di Antara Dua Musim',cat:'Kumpulan Cerita',year:2023,pages:162,blurb:`<p>Sepuluh cerita di musim-musim peralihan — tentang ambang batas dan keberanian untuk melangkah.</p>`,reviews:[{stars:4,text:'Seperti potret sesaat yang menangkap hal yang biasanya terlewat.',name:'Arum D., Goodreads'},{stars:5,text:'Saya membacanya pelan-pelan supaya tidak cepat habis.',name:'Gilang R., Goodreads'},{stars:4,text:'Koleksi yang konsisten.',name:'Putri N., Goodreads'}]},
+  {title:'Pulang ke Mana',cat:'Sajak',year:2022,pages:96,blurb:`<p>Kumpulan sajak tentang rumah — bukan sebagai tempat, tapi sebagai perasaan.</p>`,reviews:[{stars:5,text:'Sajak-sajaknya pendek tapi berat.',name:'Reza M., Goodreads'},{stars:5,text:'Tahu persis berapa berat sebuah kata.',name:'Tiara K., Goodreads'},{stars:4,text:'Buku tipis yang terasa tebal.',name:'Adi W., Goodreads'}]},
+  {title:'Ruang di Antara Kata-Kata',cat:'Kumpulan Cerita',year:2022,pages:204,blurb:`<p>Kumpulan cerpen pertama Azhar Nurunala. Delapan cerita tentang hal-hal yang tidak terucapkan.</p>`,reviews:[{stars:5,text:'Debut yang luar biasa.',name:'Lestari B., Goodreads'},{stars:4,text:'Sangat matang untuk sebuah buku pertama.',name:'Fauzan A., Goodreads'},{stars:5,text:'Cerita pertama saja sudah membuat saya tidak bisa berhenti.',name:'Mega S., Goodreads'}]},
+  {title:'Catatan dari Kota yang Lupa Tidur',cat:'Kumpulan Cerita',year:2022,pages:176,blurb:`<p>Catatan dari kota yang tidak pernah benar-benar tidur.</p>`,reviews:[{stars:4,text:'Urban dan personal sekaligus.',name:'Wahyu P., Goodreads'},{stars:5,text:'Pengalaman yang tidak terlupakan.',name:'Dina R., Goodreads'},{stars:4,text:'Sangat Jakarta, tapi juga sangat manusia.',name:'Budi S., Goodreads'}]},
+  {title:'Seperti Daun Jatuh',cat:'Sajak',year:2021,pages:88,blurb:`<p>Sajak-sajak tentang kepergian yang perlahan.</p>`,reviews:[{stars:5,text:'Melankolis tapi tidak muram.',name:'Yanti H., Goodreads'},{stars:5,text:'Untuk siapa pun yang sedang kehilangan.',name:'Surya K., Goodreads'},{stars:4,text:'Diksi yang dipilih dengan sangat hati-hati.',name:'Nanda L., Goodreads'}]},
+  {title:'Segala yang Tersisa Setelah Hujan',cat:'Sajak',year:2021,pages:104,blurb:`<p>Sajak-sajak tentang apa yang tertinggal setelah badai berlalu.</p>`,reviews:[{stars:5,text:'Membuat hal yang sederhana terasa sakral.',name:'Ira M., Goodreads'},{stars:4,text:'Yang terbaik yang pernah saya baca dalam bahasa Indonesia.',name:'Bayu T., Goodreads'},{stars:5,text:'Saya membaca buku ini tiga kali dalam seminggu.',name:'Clara N., Goodreads'}]},
+  {title:'Sebelum Kamu Pergi',cat:'Novel',year:2020,pages:240,blurb:`<p>Novel debut Azhar Nurunala. Tentang dua orang yang memilih untuk tetap ada, selagi bisa.</p>`,reviews:[{stars:5,text:'Dari novel pertama sudah terlihat betapa talentednya penulis ini.',name:'Rina K., Goodreads'},{stars:4,text:'Ending yang berani.',name:'Toni A., Goodreads'},{stars:5,text:'Menangis di toilet supaya tidak membangunkan siapapun.',name:'Wati S., Goodreads'}]},
+];
+
+function renderBooks(){
+  document.getElementById('book-grid').innerHTML=allBooks.map((b,i)=>{
+    const cs=coverStyles[i%coverStyles.length];
+    return `<div class="book-card" onclick="showBookDetail(${i})">
+      <div class="book-cover" style="background:${cs.bg}">
+        <div class="book-stripe" style="background:${cs.stripe}"></div>
+        <div class="book-cover-title">${b.title}</div>
+      </div>
+      <div class="book-card-title">${b.title}</div>
+      <div class="book-card-meta">${b.cat} · ${b.year}</div>
+    </div>`;
+  }).join('');
+}
+
+function showBookDetail(idx){
+  const b=allBooks[idx],cs=coverStyles[idx%coverStyles.length];
+  document.getElementById('bd-cat').textContent=b.cat;
+  document.getElementById('bd-title').textContent=b.title;
+  document.getElementById('bd-meta').innerHTML=`${b.year}<br>${b.pages} halaman`;
+  const shopeeBtn=document.getElementById('bd-shopee');
+  shopeeBtn.href=b.shopee||'https://shopee.co.id';
+  shopeeBtn.style.opacity=b.shopee?'1':'0.45';
+  shopeeBtn.style.pointerEvents=b.shopee?'auto':'none';
+  document.getElementById('bd-cover').style.cssText=`width:120px;flex-shrink:0;aspect-ratio:2/3;border-radius:4px;position:relative;overflow:hidden;background:${cs.bg}`;
+  document.getElementById('bd-cover').innerHTML=`<div style="position:absolute;top:0;left:0;width:100%;height:8px;background:${cs.stripe}"></div>`;
+  document.getElementById('bd-blurb').innerHTML=b.blurb;
+  document.getElementById('bd-reviews').innerHTML=b.reviews.map(r=>`<div class="review-item"><div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div><div class="review-text">"${r.text}"</div><div class="review-name">— ${r.name}</div></div>`).join('');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page-book-detail').classList.add('active');
+  document.getElementById('nav-books').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function renderPosts(page){
+  const start=page*PER_PAGE,slice=allPosts.slice(start,start+PER_PAGE),total=Math.ceil(allPosts.length/PER_PAGE);
+  document.getElementById('post-list').innerHTML=slice.map((p,i)=>`<div class="post-item" onclick="showReader(${start+i})"><div class="post-date">${p.date}</div><div class="post-title">${p.title}</div><div class="post-excerpt">${p.excerpt}</div></div>`).join('');
+  const pg=document.getElementById('pagination');
+  pg.innerHTML='';
+  if(total>1){for(let i=0;i<total;i++){const b=document.createElement('button');b.className='page-btn'+(i===page?' active-pg':'');b.textContent=i===0?'Terbaru':'← Sebelumnya ('+i+')';b.onclick=()=>{currentPage=i;renderPosts(i);window.scrollTo(0,0);};pg.appendChild(b);}}
+}
+
+function showReader(idx){
+  currentPostIdx=idx;const p=allPosts[idx];
+  document.getElementById('reader-date').textContent=p.date;
+  document.getElementById('reader-title').textContent=p.title;
+  document.getElementById('reader-body').innerHTML=p.body;
+  renderComments(idx);
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page-reader').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function renderComments(idx){
+  const c=comments[idx]||[];
+  document.getElementById('comment-list').innerHTML=c.length===0?'<div class="comment-empty">Belum ada komentar. Jadilah yang pertama.</div>':c.map(cm=>`<div class="comment-item"><div class="comment-name">${cm.name}</div><div class="comment-text">${cm.text}</div><div class="comment-time">${cm.time}</div></div>`).join('');
+  document.getElementById('c-name').value='';
+  document.getElementById('c-text').value='';
+}
+
+function submitComment(){
+  const name=document.getElementById('c-name').value.trim(),text=document.getElementById('c-text').value.trim();
+  if(!name||!text)return;
+  if(!comments[currentPostIdx])comments[currentPostIdx]=[];
+  comments[currentPostIdx].push({name,text,time:new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})});
+  renderComments(currentPostIdx);
+}
+
+function getPostUrl(idx){return 'https://nurunala.com/'+allPosts[idx].title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');}
+function copyLink(){
+  navigator.clipboard.writeText(getPostUrl(currentPostIdx)).catch(()=>{});
+  const el=document.getElementById('copy-confirm');el.textContent='Tautan disalin!';el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2000);
+}
+function shareWA(e){e.preventDefault();window.open('https://wa.me/?text='+encodeURIComponent(allPosts[currentPostIdx].title+' '+getPostUrl(currentPostIdx)),'_blank');}
+function shareX(e){e.preventDefault();window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(allPosts[currentPostIdx].title)+'&url='+encodeURIComponent(getPostUrl(currentPostIdx)),'_blank');}
+function shareIG(e){
+  e.preventDefault();navigator.clipboard.writeText(getPostUrl(currentPostIdx)).catch(()=>{});
+  const el=document.getElementById('copy-confirm');el.textContent='Tautan disalin — tempel di DM Instagram!';el.classList.add('show');setTimeout(()=>{el.classList.remove('show');el.textContent='Tautan disalin!';},3000);
+}
+function sendContact(){
+  const name=document.getElementById('ct-name').value.trim(),email=document.getElementById('ct-email').value.trim(),msg=document.getElementById('ct-msg').value.trim();
+  if(!name||!email||!msg)return;
+  document.getElementById('ct-name').value='';document.getElementById('ct-email').value='';document.getElementById('ct-msg').value='';
+  const el=document.getElementById('contact-sent');el.classList.add('show');setTimeout(()=>el.classList.remove('show'),4000);
+}
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  const nav=document.getElementById('nav-'+name);if(nav)nav.classList.add('active');
+  if(name==='home')renderPosts(currentPage);
+  if(name==='books')renderBooks();
+  window.scrollTo(0,0);
+}
+
+renderPosts(0);
+</script>
+</body>
+</html>

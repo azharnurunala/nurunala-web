@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Katalog buku Azhar Nurunala — novel, kumpulan cerita, dan sajak. Baca sinopsis, ulasan pembaca, dan beli langsung.">
+<meta name="author" content="Azhar Nurunala">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nurunala">
+<meta property="og:title" content="Buku — nurunala">
+<meta property="og:description" content="Katalog buku Azhar Nurunala — novel, kumpulan cerita, dan sajak. Baca sinopsis, ulasan pembaca, dan beli langsung.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Buku — nurunala">
+<meta name="twitter:description" content="Katalog buku Azhar Nurunala — novel, kumpulan cerita, dan sajak. Baca sinopsis, ulasan pembaca, dan beli langsung.">
+<title>Buku — nurunala</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .books-page{ max-width:var(--max); margin:0 auto; padding:3rem 1.5rem 2.75rem; }
+  .section-title{ font-family:var(--serif); font-size:30px; font-weight:400; margin-bottom:.5rem; }
+  .section-sub{ font-size:14px; color:var(--muted); font-family:var(--body-serif); font-style:italic; margin-bottom:2.25rem; }
+
+  /* ---------- Banner slider 6:4 ---------- */
+  .banner{ position:relative; aspect-ratio:6/4; border-radius:10px; overflow:hidden; margin-bottom:3.25rem; }
+  .banner-track{ display:flex; height:100%; transition:transform .55s cubic-bezier(.4,0,.2,1); }
+  .banner-slide{ flex:0 0 100%; height:100%; position:relative; display:flex; align-items:flex-end; padding:2.5rem 2.75rem; }
+  .banner-stripe{ position:absolute; top:0; left:0; width:100%; height:7px; }
+  .banner-body{ position:relative; z-index:1; max-width:78%; }
+  .banner-eyebrow{ font-size:11px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:.85rem; }
+  .banner-title{ font-family:var(--serif); font-size:34px; font-weight:400; line-height:1.15; margin-bottom:.7rem; color:var(--ink); }
+  .banner-desc{ font-family:var(--body-serif); font-size:15px; font-style:italic; color:var(--muted); line-height:1.6; margin-bottom:1.4rem; max-width:30em; }
+  .banner-cta{ font-family:var(--sans); font-size:13px; font-weight:500; color:var(--page); background:var(--ink); border:none; padding:9px 20px; border-radius:4px; cursor:pointer; text-decoration:none; display:inline-block; transition:opacity .15s; }
+  .banner-cta:hover{ opacity:.85; }
+  .banner-arrows{ position:absolute; bottom:2.5rem; right:2.5rem; display:flex; gap:.5rem; z-index:2; }
+  .banner-arrow{ width:36px; height:36px; border-radius:50%; border:none; background:rgba(255,255,255,.7); backdrop-filter:blur(4px); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .15s; }
+  .banner-arrow:hover{ background:rgba(255,255,255,.95); }
+  .banner-arrow svg{ width:15px; height:15px; fill:var(--ink); }
+  .banner-dots{ position:absolute; top:1.9rem; left:2.75rem; display:flex; gap:7px; z-index:2; }
+  .banner-dot{ width:7px; height:7px; border-radius:50%; background:rgba(26,26,24,.22); cursor:pointer; transition:background .2s,width .2s; padding:0; border:none; }
+  .banner-dot.on{ background:var(--ink); width:20px; border-radius:4px; }
+  @media(max-width:560px){
+    .banner-slide{ padding:1.75rem 1.75rem; }
+    .banner-title{ font-size:25px; }
+    .banner-desc{ font-size:13.5px; }
+    .banner-body{ max-width:100%; }
+    .banner-arrows{ bottom:1.5rem; right:1.5rem; }
+    .banner-dots{ top:1.4rem; left:1.85rem; }
+  }
+
+  /* ---------- Daftar buku ---------- */
+  .book-list{ display:flex; flex-direction:column; }
+  .book-row{ display:flex; gap:1.6rem; padding:2.1rem 0; border-bottom:0.5px solid var(--faint); align-items:flex-start; }
+  .book-row:first-child{ border-top:0.5px solid var(--faint); }
+  .book-row:last-child{ border-bottom:none; }
+  .book-row .book-cover{ width:132px; flex-shrink:0; margin:0; cursor:pointer; transition:opacity .15s,transform .15s; }
+  .book-row .book-cover:hover{ opacity:.9; transform:translateY(-2px); }
+  .book-row .book-cover-title{ font-size:13px; }
+  .book-row-info{ flex:1; min-width:0; }
+  .book-row-title{ font-family:var(--serif); font-size:21px; font-weight:400; line-height:1.22; margin-bottom:.4rem; }
+  .book-row-meta{ font-size:11px; color:var(--muted); letter-spacing:.07em; text-transform:uppercase; margin-bottom:.75rem; }
+  .book-row-desc{ font-family:var(--body-serif); font-size:14.5px; color:var(--muted); line-height:1.7; margin-bottom:1.15rem; }
+  .book-row-actions{ display:flex; gap:.6rem; flex-wrap:wrap; }
+  .book-row-actions .btn{ font-size:12.5px; padding:7px 17px; }
+  .btn--solid{ background:var(--ink); color:var(--page); border-color:var(--ink); }
+  .btn--solid:hover{ background:#000; color:var(--page); }
+  @media(max-width:480px){
+    .book-row{ gap:1.1rem; padding:1.75rem 0; }
+    .book-row .book-cover{ width:104px; }
+    .book-row-title{ font-size:19px; }
+  }
+
+  /* ---------- Modal Sinopsis ---------- */
+  .modal-overlay{ position:fixed; inset:0; background:rgba(26,26,24,.42); backdrop-filter:blur(2px); display:flex; align-items:center; justify-content:center; padding:1.5rem; z-index:50; opacity:0; pointer-events:none; transition:opacity .2s; }
+  .modal-overlay.open{ opacity:1; pointer-events:auto; }
+  .modal{ background:var(--bg); border-radius:12px; max-width:520px; width:100%; max-height:86vh; overflow-y:auto; padding:2.5rem 2.5rem 2.75rem; position:relative; transform:translateY(10px) scale(.99); transition:transform .22s; }
+  .modal-overlay.open .modal{ transform:none; }
+  .modal-close{ position:absolute; top:1rem; right:1rem; width:32px; height:32px; border-radius:50%; border:none; background:none; cursor:pointer; color:var(--muted); display:flex; align-items:center; justify-content:center; transition:background .15s,color .15s; }
+  .modal-close:hover{ background:var(--faint); color:var(--ink); }
+  .modal-close svg{ width:16px; height:16px; stroke:currentColor; stroke-width:1.6; fill:none; }
+  .modal-cat{ font-size:11px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:.45rem; }
+  .modal-title{ font-family:var(--serif); font-size:25px; font-weight:400; line-height:1.2; margin-bottom:.5rem; padding-right:2rem; }
+  .modal-meta{ font-size:13px; color:var(--muted); margin-bottom:1.5rem; }
+  .modal-blurb{ font-family:var(--body-serif); font-size:16px; line-height:1.8; margin-bottom:2rem; }
+  .modal-blurb p{ margin-bottom:1em; }
+  .modal-reviews-label{ font-family:var(--serif); font-size:16px; font-weight:400; margin-bottom:1rem; }
+  .modal-review{ padding:1.1rem 0; border-bottom:0.5px solid var(--faint); }
+  .modal-review:first-of-type{ border-top:0.5px solid var(--faint); }
+  .modal-review:last-of-type{ border-bottom:none; }
+  .modal-review-stars{ font-size:12px; color:var(--line); margin-bottom:.4rem; letter-spacing:2px; }
+  .modal-review-text{ font-size:14px; color:var(--muted); line-height:1.65; font-style:italic; margin-bottom:.45rem; }
+  .modal-review-name{ font-size:12px; color:var(--muted); }
+  .modal-buy{ margin-top:2rem; }
+  @media(max-width:480px){ .modal{ padding:2rem 1.5rem 2.25rem; } }
+
+  /* ---------- Popup kover besar ---------- */
+  .cover-overlay{ position:fixed; inset:0; background:rgba(26,26,24,.6); backdrop-filter:blur(3px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.25rem; padding:2rem; z-index:60; opacity:0; pointer-events:none; transition:opacity .2s; }
+  .cover-overlay.open{ opacity:1; pointer-events:auto; }
+  .cover-big{ width:300px; max-width:78vw; aspect-ratio:2/3; border-radius:8px; position:relative; overflow:hidden; display:flex; align-items:flex-end; padding:1.6rem; box-shadow:0 24px 60px rgba(0,0,0,.35); transform:translateY(12px) scale(.97); transition:transform .25s; }
+  .cover-overlay.open .cover-big{ transform:none; }
+  .cover-big .book-stripe{ height:9px; }
+  .cover-big .book-cover-title{ font-size:17px; }
+  .cover-cap{ text-align:center; color:rgba(255,255,255,.92); }
+  .cover-cap-title{ font-family:var(--serif); font-size:18px; font-weight:400; margin-bottom:.2rem; }
+  .cover-cap-meta{ font-size:12px; color:rgba(255,255,255,.65); letter-spacing:.06em; text-transform:uppercase; }
+  .cover-close{ position:absolute; top:1.25rem; right:1.25rem; width:38px; height:38px; border-radius:50%; border:none; background:rgba(255,255,255,.15); cursor:pointer; color:#fff; display:flex; align-items:center; justify-content:center; transition:background .15s; }
+  .cover-close:hover{ background:rgba(255,255,255,.28); }
+  .cover-close svg{ width:17px; height:17px; stroke:currentColor; stroke-width:1.6; fill:none; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">nurunala</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Blog</a></li>
+      <li><a href="buku.html" class="active">Buku</a></li>
+      <li><a href="kelas.html">Kelas</a></li>
+      <li><a href="tentang.html" class="nav-quiet">Profil</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="books-page">
+  <div class="banner" id="banner">
+    <div class="banner-track" id="banner-track"></div>
+    <div class="banner-dots" id="banner-dots"></div>
+    <div class="banner-arrows">
+      <button class="banner-arrow" id="banner-prev" aria-label="Sebelumnya"><svg viewBox="0 0 16 16"><path d="M10.5 3L5.5 8l5 5V3z"/></svg></button>
+      <button class="banner-arrow" id="banner-next" aria-label="Berikutnya"><svg viewBox="0 0 16 16"><path d="M5.5 3l5 5-5 5V3z"/></svg></button>
+    </div>
+  </div>
+
+  <div class="section-title">Buku</div>
+  <div class="section-sub">Novel, kumpulan cerita, dan sajak — karya Azhar Nurunala</div>
+  <div class="book-list" id="book-list"></div>
+</main>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
+    <button class="modal-close" id="modal-close" aria-label="Tutup"><svg viewBox="0 0 16 16"><path d="M3 3l10 10M13 3L3 13"/></svg></button>
+    <div class="modal-cat" id="m-cat"></div>
+    <div class="modal-title" id="m-title"></div>
+    <div class="modal-meta" id="m-meta"></div>
+    <div class="modal-blurb" id="m-blurb"></div>
+    <div class="modal-reviews-label">Ulasan Pembaca</div>
+    <div id="m-reviews"></div>
+    <a class="btn btn--solid modal-buy" id="m-buy" href="https://toko.nurunala.blog" target="_blank" rel="noopener">Beli Sekarang</a>
+  </div>
+</div>
+
+<div class="cover-overlay" id="cover-overlay">
+  <button class="cover-close" id="cover-close" aria-label="Tutup"><svg viewBox="0 0 16 16"><path d="M3 3l10 10M13 3L3 13"/></svg></button>
+  <div class="cover-big" id="cover-big"></div>
+  <div class="cover-cap">
+    <div class="cover-cap-title" id="cover-cap-title"></div>
+    <div class="cover-cap-meta" id="cover-cap-meta"></div>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="foot-legal">© 2026 Azhar Nurunala</div>
+</footer>
+
+<script src="data.js"></script>
+<script src="data.js"></script>
+<script>
+  // Astro-ready: no inline on* handlers — semua diikat lewat addEventListener.
+  const SHOP = 'https://toko.nurunala.blog';
+  const shopUrl = (b) => (b && b.toko) ? b.toko : SHOP;   // dukung link toko per-buku (data.toko)
+  const strip = (html) => html.replace(/<[^>]+>/g, '').trim();
+
+  /* ---- Banner ---- */
+  const banners = [
+    { ci:3, eyebrow:'Buku Terbaru · 2026', title:'Jumpa Lagi di Surga', desc:'Tentang pertemuan yang tak pernah kita rencanakan — dan perpisahan yang selalu datang terlalu cepat.', cta:'Beli Sekarang', href:SHOP },
+    { ci:7, eyebrow:'Baru Terbit · 2026', title:'Seribu Wajah Ayah', desc:'Novel yang menjelajahi jarak dan kedekatan antara seorang anak dan ayahnya.', cta:'Beli Sekarang', href:SHOP },
+    { ci:0, eyebrow:'Koleksi Lengkap', title:'Semua karya, satu toko', desc:'Dua belas judul kini tersedia di toko.nurunala.blog — novel, cerita, hingga sajak.', cta:'Kunjungi Toko', href:SHOP },
+  ];
+  const banner = document.getElementById('banner');
+  const track = document.getElementById('banner-track');
+  const dotsWrap = document.getElementById('banner-dots');
+  track.innerHTML = banners.map(s => {
+    const cs = coverStyles[s.ci % coverStyles.length];
+    return `<div class="banner-slide" style="background:${cs.bg}">
+      <div class="banner-stripe" style="background:${cs.stripe}"></div>
+      <div class="banner-body">
+        <div class="banner-eyebrow">${s.eyebrow}</div>
+        <div class="banner-title">${s.title}</div>
+        <div class="banner-desc">${s.desc}</div>
+        <a class="banner-cta" href="${s.href}" target="_blank" rel="noopener">${s.cta}</a>
+      </div>
+    </div>`;
+  }).join('');
+  dotsWrap.innerHTML = banners.map((_, i) => `<button class="banner-dot${i===0?' on':''}" data-dot="${i}" aria-label="Slide ${i+1}"></button>`).join('');
+
+  let bi = 0, bTimer = null;
+  function renderBanner(){
+    track.style.transform = `translateX(-${bi*100}%)`;
+    [...dotsWrap.children].forEach((d, i) => d.classList.toggle('on', i === bi));
+  }
+  function goBanner(i){ bi = (i + banners.length) % banners.length; renderBanner(); restartTimer(); }
+  function moveBanner(d){ goBanner(bi + d); }
+  function startTimer(){ bTimer = setInterval(() => moveBanner(1), 6000); }
+  function stopTimer(){ clearInterval(bTimer); bTimer = null; }
+  function restartTimer(){ stopTimer(); startTimer(); }
+
+  document.getElementById('banner-prev').addEventListener('click', () => moveBanner(-1));
+  document.getElementById('banner-next').addEventListener('click', () => moveBanner(1));
+  dotsWrap.addEventListener('click', (e) => {
+    const dot = e.target.closest('[data-dot]');
+    if (dot) goBanner(+dot.dataset.dot);
+  });
+  // jeda saat kursor di atas banner
+  banner.addEventListener('mouseenter', stopTimer);
+  banner.addEventListener('mouseleave', startTimer);
+  // geser (swipe) di layar sentuh
+  let tx = null;
+  banner.addEventListener('touchstart', (e) => { tx = e.changedTouches[0].clientX; stopTimer(); }, { passive: true });
+  banner.addEventListener('touchend', (e) => {
+    if (tx === null) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 40) moveBanner(dx < 0 ? 1 : -1);
+    tx = null; startTimer();
+  });
+  startTimer();
+
+  /* ---- Daftar buku ---- */
+  const list = document.getElementById('book-list');
+  list.innerHTML = allBooks.map((b, i) => {
+    const cs = coverStyles[i % coverStyles.length];
+    return `<div class="book-row">
+      <div class="book-cover" style="background:${cs.bg}" data-cover="${i}" role="button" tabindex="0" aria-label="Lihat kover ${b.title}" title="Lihat kover">
+        <div class="book-stripe" style="background:${cs.stripe}"></div>
+        <div class="book-cover-title">${b.title}</div>
+      </div>
+      <div class="book-row-info">
+        <div class="book-row-title">${b.title}</div>
+        <div class="book-row-meta">${b.cat} · ${b.year}</div>
+        <div class="book-row-desc">${strip(b.blurb)}</div>
+        <div class="book-row-actions">
+          <button class="btn" data-modal="${i}">Sinopsis</button>
+          <a class="btn btn--solid" href="${shopUrl(b)}" target="_blank" rel="noopener">Beli Sekarang</a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  list.addEventListener('click', (e) => {
+    const m = e.target.closest('[data-modal]');
+    if (m) { openModal(+m.dataset.modal); return; }
+    const c = e.target.closest('[data-cover]');
+    if (c) openCover(+c.dataset.cover);
+  });
+  list.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const c = e.target.closest('[data-cover]');
+    if (c) { e.preventDefault(); openCover(+c.dataset.cover); }
+  });
+
+  /* ---- Modal Sinopsis ---- */
+  const overlay = document.getElementById('modal-overlay');
+  const mBuy = document.getElementById('m-buy');
+  let lastFocus = null;
+  function openModal(i){
+    const b = allBooks[i];
+    document.getElementById('m-cat').textContent = b.cat;
+    document.getElementById('m-title').textContent = b.title;
+    document.getElementById('m-meta').textContent = `${b.year} · ${b.pages} halaman`;
+    document.getElementById('m-blurb').innerHTML = b.blurb;
+    document.getElementById('m-reviews').innerHTML = b.reviews.map(r => `
+      <div class="modal-review">
+        <div class="modal-review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
+        <div class="modal-review-text">"${r.text}"</div>
+        <div class="modal-review-name">— ${r.name}</div>
+      </div>`).join('');
+    mBuy.href = shopUrl(b);
+    openOverlay(overlay, document.getElementById('modal-close'));
+  }
+  function closeModal(){ closeOverlay(overlay); }
+
+  /* ---- Popup kover besar ---- */
+  const coverOverlay = document.getElementById('cover-overlay');
+  function openCover(i){
+    const b = allBooks[i];
+    const cs = coverStyles[i % coverStyles.length];
+    const big = document.getElementById('cover-big');
+    big.style.background = cs.bg;
+    big.innerHTML = `<div class="book-stripe" style="background:${cs.stripe}"></div><div class="book-cover-title">${b.title}</div>`;
+    document.getElementById('cover-cap-title').textContent = b.title;
+    document.getElementById('cover-cap-meta').textContent = `${b.cat} · ${b.year}`;
+    openOverlay(coverOverlay, document.getElementById('cover-close'));
+  }
+  function closeCover(){ closeOverlay(coverOverlay); }
+
+  /* ---- Util overlay: kunci scroll, kelola fokus ---- */
+  function openOverlay(el, focusTarget){
+    lastFocus = document.activeElement;
+    el.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (focusTarget) focusTarget.focus();
+  }
+  function closeOverlay(el){
+    el.classList.remove('open');
+    if (!document.querySelector('.modal-overlay.open, .cover-overlay.open')) {
+      document.body.style.overflow = '';
+    }
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  // klik area gelap untuk menutup
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+  coverOverlay.addEventListener('click', (e) => { if (e.target === coverOverlay) closeCover(); });
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.getElementById('cover-close').addEventListener('click', closeCover);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal(); closeCover(); } });
+</script>
+</body>
+</html>

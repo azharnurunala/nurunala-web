@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Tentang Azhar Nurunala — penulis novel, cerita pendek, dan sajak.">
+<meta name="author" content="Azhar Nurunala">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="nurunala">
+<meta property="og:title" content="Tentang — nurunala">
+<meta property="og:description" content="Tentang Azhar Nurunala — penulis novel, cerita pendek, dan sajak.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tentang — nurunala">
+<meta name="twitter:description" content="Tentang Azhar Nurunala — penulis novel, cerita pendek, dan sajak.">
+<title>Tentang — nurunala</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  .about{ max-width:var(--max); margin:0 auto; padding:4rem 1.5rem 2.75rem; }
+  .about h1{ font-family:var(--serif); font-size:30px; font-weight:400; margin-bottom:.3rem; }
+  .about-subtitle{ font-size:13px; color:var(--muted); letter-spacing:.03em; margin-bottom:1.5rem; }
+  .about-photo{ width:100%; aspect-ratio:3/4; max-height:480px; background:var(--faint); border-radius:6px; overflow:hidden; display:flex; align-items:center; justify-content:center; margin-bottom:2.5rem; }
+  .about-photo span{ font-family:var(--sans); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:#b6b3aa; }
+  .about-body{ font-size:16px; line-height:1.85; }
+  .about-body p{ margin-bottom:1.25em; }
+
+  .contact-section{ margin-top:2.5rem; padding-top:2rem; border-top:0.5px solid var(--faint); }
+  .contact-section h3{ font-family:var(--serif); font-size:20px; font-weight:400; margin-bottom:1.25rem; }
+  .contact-form{ display:flex; flex-direction:column; gap:10px; }
+  .contact-form input,.contact-form textarea{ width:100%; padding:10px 14px; font-size:14px; font-family:var(--sans); border:0.5px solid var(--faint); border-radius:6px; background:var(--page); color:var(--ink); outline:none; transition:border-color .15s; resize:none; }
+  .contact-form input:focus,.contact-form textarea:focus{ border-color:var(--line); }
+  .contact-form textarea{ min-height:100px; }
+  .submit-btn{ font-size:13px; font-weight:500; color:var(--ink); background:none; border:0.5px solid var(--line); padding:8px 20px; border-radius:4px; cursor:pointer; font-family:var(--sans); transition:background .15s; align-self:flex-start; }
+  .submit-btn:hover{ background:var(--faint); }
+  .contact-sent{ font-size:13px; color:var(--muted); margin-top:.5rem; opacity:0; transition:opacity .3s; }
+  .contact-sent.show{ opacity:1; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">nurunala</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Blog</a></li>
+      <li><a href="buku.html">Buku</a></li>
+      <li><a href="kelas.html">Kelas</a></li>
+      <li><a href="tentang.html" class="nav-quiet active">Profil</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="about">
+  <h1>Azhar Nurunala</h1>
+  <div class="about-subtitle">Penulis</div>
+  <div class="about-photo"><span>foto penulis</span></div>
+
+  <div class="about-body">
+    <p>Saya menulis karena ada hal-hal yang lebih mudah disampaikan lewat fiksi daripada percakapan biasa. Cerpen, fiksi mini, dan sesekali opini — semua berangkat dari pengamatan kecil yang sulit dilupakan.</p>
+    <p>Tulisan saya pernah dimuat di berbagai media daring dan antologi bersama. Buku kumpulan cerpen pertama saya terbit pada 2022, disusul esai personal pada 2024.</p>
+    <p>Di luar menulis, saya percaya bahwa setiap orang punya cerita yang layak ditulis — dan kadang yang dibutuhkan hanya keberanian untuk memulai.</p>
+  </div>
+
+  <div class="contact-section">
+    <h3>Kirim Pesan</h3>
+    <div class="contact-form">
+      <input type="text" id="ct-name" placeholder="Nama kamu" maxlength="80">
+      <input type="email" id="ct-email" placeholder="Email">
+      <textarea id="ct-msg" placeholder="Pesan..."></textarea>
+      <button class="submit-btn" onclick="sendContact()">Kirim</button>
+      <span class="contact-sent" id="contact-sent">Pesan terkirim. Terima kasih sudah menyapa.</span>
+    </div>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="foot-legal">© 2026 Azhar Nurunala</div>
+</footer>
+
+<script>
+  function sendContact(){
+    const name=document.getElementById('ct-name').value.trim();
+    const email=document.getElementById('ct-email').value.trim();
+    const msg=document.getElementById('ct-msg').value.trim();
+    if(!name||!email||!msg) return;
+    document.getElementById('ct-name').value='';
+    document.getElementById('ct-email').value='';
+    document.getElementById('ct-msg').value='';
+    const el=document.getElementById('contact-sent');
+    el.classList.add('show');
+    setTimeout(()=>el.classList.remove('show'),4000);
+  }
+</script>
+</body>
+</html>
